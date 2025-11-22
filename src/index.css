@@ -1,0 +1,102 @@
+@import "tailwindcss";
+
+/* 1. Definição do Tema (Mapeamento) */
+@theme {
+    /* Mapeia as classes usadas no seu React (bg-background, text-primary, etc) */
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+    
+    --color-primary: var(--primary);
+    --color-primary-foreground: var(--primary-foreground);
+    
+    --color-secondary: var(--secondary);
+    --color-secondary-foreground: var(--secondary-foreground);
+    
+    --color-card: var(--card);
+    --color-card-foreground: var(--card-foreground);
+    
+    --color-border: var(--border);
+
+    /* Mantive suas cores estáticas da paleta original também */
+    --color-brand-700: #A00D41;
+    --color-brand-600: #C81051;
+    --color-brand-500: #D34074;
+}
+
+/* 2. Variáveis de Cores (Valores HEX) */
+@layer base {
+    :root {
+        /* MODO CLARO (Light Mode) */
+        --background: #f8fafc;
+        --foreground: #0f172a;
+        
+        --card: #ffffff;
+        --card-foreground: #0f172a;
+        
+        --border: #e2e8f0;
+        
+        --primary: #6832A8;          /* Seu roxo original */
+        --primary-foreground: #ffffff;
+        
+        --secondary: #f3e8ff;
+        --secondary-foreground: #2E1A47;
+    }
+
+    .dark {
+        /* MODO ESCURO (Dark Mode) */
+        --background: #0B0516;       /* Seu fundo escuro original */
+        --foreground: #f8fafc;
+        
+        --card: #181024;
+        --card-foreground: #e2e8f0;
+        
+        --border: #2E1A47;
+        
+        --primary: #7c3aed;
+        --primary-foreground: #ffffff;
+        
+        --secondary: #2E1A47;
+        --secondary-foreground: #CFA6F5;
+    }
+
+    /* Reset global */
+    body {
+        @apply bg-background text-foreground border-border;
+        font-family: 'Inter', sans-serif;
+        font-size: 16px;
+        line-height: 1.6;
+        transition: background-color 0.3s, color 0.3s;
+    }
+}
+
+/* 3. Animações */
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(10px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.3s ease-out;
+}
+
+/* src/index.css */
+
+@layer utilities {
+  .animate-fade-in-up {
+    animation: fadeInUp 0.8s ease-out forwards; /* forwards mantém o estado final */
+    opacity: 0; /* Começa invisível */
+    transform: translateY(20px); /* Começa um pouco abaixo */
+  }
+
+  /* Delays para criar o efeito de escadinha */
+  .delay-100 { animation-delay: 100ms; }
+  .delay-200 { animation-delay: 200ms; }
+  .delay-300 { animation-delay: 300ms; }
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
