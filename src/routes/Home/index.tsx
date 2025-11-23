@@ -22,9 +22,7 @@ export default function Home() {
                 </h1>
 
                 <p className="animate-fade-in-up delay-200 text-lg md:text-xl text-muted-foreground/80 max-w-2xl mb-10 leading-relaxed">
-                    O Caminho Circular vence porque ele pressiona através do tempo. 
-                    O Caminho Circular usa IA da Carreira para transformar o que você 
-                    já sabe no próximo nível do que é. Viver. Joelhos.
+                    O mercado mudou, mas você não precisa começar do zero. O Carreira Circular usa IA para transformar o que você já sabe na profissão que o futuro precisa.
                 </p>
 
                 <div className="animate-fade-in-up delay-300 flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">

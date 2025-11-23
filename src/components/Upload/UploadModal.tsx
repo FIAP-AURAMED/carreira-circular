@@ -1,5 +1,6 @@
+// UploadModal.tsx - CORRIGIDO
 import { X, Upload, FileText, Brain, Sparkles, Lock } from 'lucide-react';
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 interface UploadModalProps {
@@ -7,7 +8,6 @@ interface UploadModalProps {
   onClose: () => void;
 }
 
-// Passos do processamento visual (da sua imagem)
 const STEPS = [
   { icon: FileText, text: "Lendo PDF...", color: "text-blue-400", bg: "bg-blue-500/20" },
   { icon: Brain, text: "Processando Skills...", color: "text-purple-400", bg: "bg-purple-500/20" },
@@ -17,11 +17,10 @@ const STEPS = [
 export default function UploadModal({ isOpen, onClose }: UploadModalProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
-  
-  // Estados da Tela
-  const [status, setStatus] = useState<'idle' | 'processing' | 'completed' | 'partial'>('idle');
+  const [status, setStatus] = useState<'idle' | 'processing' | 'partial' | 'completed'>('idle');
   const [currentStep, setCurrentStep] = useState(0);
-  const [analysisResult, setAnalysisResult] = useState<any>(null);
+
+  const API_BASE_URL = import.meta.env?.VITE_API_URL || "http://localhost:8080";
 
   if (!isOpen) return null;
 
@@ -31,188 +30,190 @@ export default function UploadModal({ isOpen, onClose }: UploadModalProps) {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // 1. Inicia o visual de processamento
     setStatus('processing');
+    setCurrentStep(0);
     
-    // Simula a animação dos passos (visual apenas)
     const stepInterval = setInterval(() => {
       setCurrentStep(prev => (prev < 2 ? prev + 1 : prev));
-    }, 1500); // Troca de passo a cada 1.5s
+    }, 1500); 
 
     try {
-      // 2. Verifica se está logado
       const token = localStorage.getItem('authToken');
       const userId = localStorage.getItem('userId');
 
+      // Se usuário NÃO está logado, salva análise no localStorage
       if (!token || !userId) {
-        // --- CENÁRIO NÃO LOGADO ---
-        // Simula o tempo de processamento e cai no estado "Parcial"
+        // Simula análise (em produção, isso viria do backend)
+        const analiseSimulada = {
+          analiseId: Date.now(),
+          usuarioId: null,
+          scoreLongevidade: 8.5,
+          habilidadesEmRisco: 4,
+          habilidadesEstaveis: 15,
+          criadoEm: new Date().toISOString(),
+          mensagem: "✨ Analisamos seu currículo e identificamos um perfil com grande potencial! 💫",
+          habilidades: [
+            {
+              nomeHabilidade: "Java (Backend)",
+              longevidade: "Média Longevidade",
+              anosRestantes: 5,
+              riscoObsolescencia: 0.3,
+              categoria: "Tecnologia"
+            },
+            {
+              nomeHabilidade: "React",
+              longevidade: "Alta Longevidade", 
+              anosRestantes: 8,
+              riscoObsolescencia: 0.1,
+              categoria: "Frontend"
+            }
+          ],
+          rotasUpcycling: [
+            {
+              habilidadeOrigem: "Java",
+              microHabilidade: "Microsserviços com Spring Boot",
+              horasEstimadas: 40,
+              novaCompetencia: "Arquitetura de Microsserviços",
+              ganhoLongevidade: 3,
+              tipoRota: "Upcycling - Reaproveitamento"
+            }
+          ]
+        };
+
         setTimeout(() => {
           clearInterval(stepInterval);
-          setStatus('partial'); 
+          
+          // SALVA NO LOCALSTORAGE PARA USAR DEPOIS DO LOGIN
+          localStorage.setItem('analiseCurriculoPendente', JSON.stringify(analiseSimulada));
+          localStorage.setItem('curriculoFile', file.name);
+          
+          setStatus('partial');
         }, 4000);
         return;
       }
 
-      // --- CENÁRIO LOGADO (Back-end Real) ---
+      // Se usuário ESTÁ logado, envia para o backend
       const formData = new FormData();
       formData.append('arquivo', file);
 
-      const response = await fetch('http://localhost:8080/api/curriculos/analisar', { // URL do seu backend
+      const response = await fetch(`${API_BASE_URL}/api/curriculos/analisar`, { 
         method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}` // Bearer Token conforme manual
-        },
+        headers: { 'Authorization': `Bearer ${token}` },
         body: formData
       });
 
       if (!response.ok) throw new Error('Erro na análise');
-
       const data = await response.json();
       
-      // Sucesso total
       clearInterval(stepInterval);
-      setAnalysisResult(data);
       setStatus('completed');
       
-      // Aqui você pode salvar no contexto ou redirecionar para uma página de resultados
-      // Ex: navigate(`/analise/${data.analiseId}`);
+      // Salva no histórico de análises
+      salvarNoHistorico(data);
+      
+      alert("Análise completa! Atualizando seu perfil...");
+      onClose();
+      window.location.reload(); // Recarrega para mostrar novos dados
 
     } catch (error) {
       console.error(error);
       clearInterval(stepInterval);
-      setStatus('idle'); // Volta pro inicio em caso de erro (ou mostre msg de erro)
-      alert("Erro ao conectar com o servidor de IA.");
+      setStatus('idle');
+      alert("Erro ao conectar com o servidor.");
     }
   };
 
-  // Renderiza a tela de Processamento (Igual sua imagem)
+  // Função para salvar análise no histórico
+  const salvarNoHistorico = (analise: any) => {
+    const historico = JSON.parse(localStorage.getItem('historicoAnalises') || '[]');
+    historico.push({
+      ...analise,
+      tipo: 'curriculo',
+      data: new Date().toISOString()
+    });
+    localStorage.setItem('historicoAnalises', JSON.stringify(historico));
+  };
+
+  // 1. TELA DE PROCESSAMENTO
   if (status === 'processing') {
     return (
-      <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-md">
-        <div className="w-full max-w-lg p-8 text-center">
-            
-            {/* Botão Fechar */}
-            <button onClick={onClose} className="absolute top-6 right-6 text-gray-400 hover:text-white">
-                <X size={24} />
-            </button>
-
-            <h2 className="text-xl font-semibold text-white mb-2">
-                Processando {fileInputRef.current?.files?.[0]?.name || "Currículo"}
-            </h2>
-            <p className="text-gray-400 mb-10">Nossa IA está analisando seu currículo...</p>
-
-            <div className="flex flex-col gap-6 items-start max-w-xs mx-auto">
-                {STEPS.map((step, index) => {
-                    const isActive = index === currentStep;
-                    const isCompleted = index < currentStep;
-                    
-                    return (
-                        <div key={index} className={`flex items-center gap-4 transition-all duration-500 ${index > currentStep ? 'opacity-30 blur-[1px]' : 'opacity-100'}`}>
-                            <div className={`p-3 rounded-full ${isActive || isCompleted ? step.bg : 'bg-gray-800'}`}>
-                                <step.icon size={24} className={isActive || isCompleted ? step.color : 'text-gray-500'} />
-                            </div>
-                            <span className={`text-lg font-medium ${isActive || isCompleted ? 'text-white' : 'text-gray-500'}`}>
-                                {step.text}
-                            </span>
-                        </div>
-                    )
-                })}
+      <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-md p-4">
+        <div className="w-full max-w-lg p-6 sm:p-8 text-center relative">
+            <h2 className="text-xl font-semibold text-white mb-2">Analisando Currículo...</h2>
+            <div className="flex flex-col gap-4 mt-8">
+                {STEPS.map((step, index) => (
+                    <div key={index} className={`flex items-center gap-4 transition-opacity ${index > currentStep ? 'opacity-30' : 'opacity-100'}`}>
+                        <step.icon className={step.color} />
+                        <span className="text-white">{step.text}</span>
+                    </div>
+                ))}
             </div>
         </div>
       </div>
     );
   }
 
-  // Renderiza a tela de "Bloqueio Parcial" (Usuário não logado)
+  // 2. TELA PARCIAL (BLOQUEIO)
   if (status === 'partial') {
      return (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-md">
-            <div className="relative w-full max-w-md p-8 bg-[#0f111a] border border-purple-500/30 rounded-2xl shadow-2xl text-center overflow-hidden">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-md p-4">
+            <div className="relative w-full max-w-md bg-[#0f111a] border border-purple-500/30 rounded-2xl p-6 shadow-2xl text-center">
+                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-t-2xl" />
                 
-                {/* Efeito de fundo */}
-                <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500" />
+                <h2 className="text-2xl font-bold text-white mt-4 mb-2">Análise Pronta!</h2>
+                <p className="text-gray-400 text-sm mb-6">Faça login para ver o resultado completo.</p>
 
-                <div className="bg-green-500/10 text-green-400 p-3 rounded-lg inline-flex items-center gap-2 mb-6">
-                    <Sparkles size={18} />
-                    <span className="font-semibold">Análise Concluída com Sucesso!</span>
-                </div>
-
-                <h2 className="text-2xl font-bold text-white mb-4">Resultado Pronto</h2>
-                <p className="text-gray-400 mb-8">
-                    Identificamos <strong>12 competências</strong> e <strong>3 rotas de carreira</strong> circular para o seu perfil.
-                </p>
-
-                {/* Área "Blurrada" simulando o conteúdo */}
-                <div className="relative bg-gray-900/50 p-4 rounded-xl mb-8 border border-white/5 select-none">
-                    <div className="filter blur-sm opacity-50 flex flex-col gap-3">
-                         <div className="h-4 bg-gray-700 rounded w-3/4"></div>
-                         <div className="h-4 bg-gray-700 rounded w-1/2"></div>
-                         <div className="h-4 bg-gray-700 rounded w-full"></div>
+                <div className="bg-gray-800/50 p-4 rounded-lg mb-6 relative overflow-hidden">
+                    <div className="blur-sm opacity-50 space-y-3">
+                        <div className="h-3 bg-gray-600 rounded w-3/4"></div>
+                        <div className="h-3 bg-gray-600 rounded w-full"></div>
                     </div>
-                    
-                    {/* Cadeado por cima */}
-                    <div className="absolute inset-0 flex flex-col items-center justify-center z-10">
-                        <div className="bg-black/60 p-3 rounded-full backdrop-blur-sm mb-2">
-                            <Lock size={24} className="text-white" />
-                        </div>
-                        <span className="text-sm font-bold text-white">Conteúdo Bloqueado</span>
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/40">
+                        <Lock className="text-white" />
                     </div>
                 </div>
 
                 <button 
                     onClick={() => { onClose(); navigate('/login'); }}
-                    className="w-full py-3 px-4 bg-primary hover:bg-primary/90 text-white font-bold rounded-lg transition-all shadow-lg shadow-purple-500/25"
+                    className="w-full py-3 bg-primary text-white rounded-lg font-bold hover:brightness-110"
                 >
-                    Fazer Login para Ver Resultado
+                    Fazer Login
                 </button>
-                
-                <button onClick={onClose} className="mt-4 text-sm text-gray-500 hover:text-gray-300">
-                    Cancelar
-                </button>
+                <button onClick={onClose} className="mt-4 text-sm text-gray-500">Cancelar</button>
             </div>
         </div>
      )
   }
 
-  // Tela Inicial (Upload)
+  // 3. TELA INICIAL (UPLOAD) - CORRIGIDA
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm animate-fade-in" onClick={(e) => e.target === e.currentTarget && onClose()}>
-      <div className="relative w-full max-w-md p-6 mx-4 bg-[#0B0516] border border-white/10 rounded-2xl shadow-2xl animate-fade-in-up">
-        
-        <button onClick={onClose} className="absolute top-4 right-4 p-1 text-gray-400 hover:text-white transition-colors">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4" onClick={(e) => e.target === e.currentTarget && onClose()}>
+      <div className="relative w-full max-w-md bg-[#0B0516] border border-white/10 rounded-2xl p-6 shadow-2xl animate-fade-in-up">
+        <button onClick={onClose} className="absolute top-4 right-4 text-gray-400 hover:text-white">
           <X size={20} />
         </button>
-
-        <div className="flex flex-col items-center text-center pt-4 pb-2">
-          <div className="h-20 w-20 bg-primary/10 rounded-full flex items-center justify-center mb-6 ring-1 ring-primary/20 shadow-[0_0_30px_-5px_rgba(124,58,237,0.3)]">
-            <Upload size={32} className="text-primary" />
+        
+        <div className="flex flex-col items-center text-center">
+          <div className="h-16 w-16 bg-primary/10 rounded-full flex items-center justify-center mb-4 ring-1 ring-primary/20">
+            <Upload size={28} className="text-primary" />
           </div>
-
-          <h2 className="text-2xl font-bold text-white mb-2">Anexar Currículo</h2>
-          <p className="text-gray-400 mb-8 max-w-[80%]">
-            Faça upload do seu CV em PDF para iniciar a análise de carreira circular
-          </p>
-
+          <h2 className="text-xl font-bold text-white mb-2">Anexar Currículo</h2>
+          <p className="text-gray-400 text-sm mb-6">PDF até 10MB</p>
+          
           <input 
             type="file" 
-            ref={fileInputRef}
-            accept=".pdf"
-            className="hidden"
-            onChange={handleFileUpload}
+            ref={fileInputRef} 
+            accept=".pdf" 
+            className="hidden" 
+            onChange={handleFileUpload} 
           />
-
+          
           <button 
-            onClick={handleFileSelect}
-            className="w-full flex items-center justify-center gap-2 py-3 px-4 bg-primary hover:brightness-110 text-white font-semibold rounded-lg transition-all shadow-lg shadow-primary/25 mb-4"
+            onClick={handleFileSelect} 
+            className="w-full py-3 bg-primary text-white rounded-lg font-semibold hover:brightness-110 flex items-center justify-center gap-2"
           >
-            <FileText size={18} />
-            Selecionar Arquivo PDF
+            <FileText size={18} /> Selecionar Arquivo
           </button>
-
-          <span className="text-xs text-gray-500 font-medium">
-            Apenas arquivos PDF • Máximo 10MB
-          </span>
         </div>
       </div>
     </div>

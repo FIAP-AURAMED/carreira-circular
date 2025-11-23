@@ -12,6 +12,7 @@ import CentralAjuda from './routes/CentralAjuda';
 import Login from './routes/Login';
 import Cadastro from './routes/Cadastro';
 import { ThemeProvider } from './context/ThemeContext';
+import Perfil from './routes/Perfil';
 
 const router = createBrowserRouter(
   [
@@ -27,13 +28,13 @@ const router = createBrowserRouter(
         { path: "/cadastro", element: <Cadastro /> },
       ],
     },
-    // {
-    //   path: "/profissional/:id", 
-    //   element: <ProfissionalLayout />,
-    //   errorElement: <NotFound />,
-    // },
+    {
+      path: "/perfil/:id", 
+      element: <Perfil />,
+      errorElement: <NotFound />,
+    },
   ],
-  // { basename: import.meta.env.BASE_URL }
+  { basename: import.meta.env.BASE_URL }
 );
 
 createRoot(document.getElementById('root')!).render(
