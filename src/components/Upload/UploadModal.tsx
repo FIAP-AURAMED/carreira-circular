@@ -135,17 +135,11 @@ export default function UploadModal({ isOpen, onClose }: UploadModalProps) {
             if (!response.ok) {
                 let errorMessage = `Erro ${response.status}: ${response.statusText}`;
 
-                try {
-                    const errorData = await response.json();
-                    console.error('📋 Detalhes do erro:', errorData);
-                    errorMessage = errorData.message || errorData.error || errorMessage;
-                } catch (parseError) {
-                    const errorText = await response.text();
-                    console.error('📋 Erro como texto:', errorText);
-                    errorMessage = errorText || errorMessage;
-                }
+                const errorBody = await response.text();
+                console.error('📋 Erro da API:', errorBody);
+                throw new Error(errorBody || `Erro ${response.status}`);
 
-                throw new Error(errorMessage);
+
             }
 
             const data = await response.json();
