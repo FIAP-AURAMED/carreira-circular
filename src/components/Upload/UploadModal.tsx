@@ -20,8 +20,7 @@ export default function UploadModal({ isOpen, onClose }: UploadModalProps) {
     const [status, setStatus] = useState<'idle' | 'processing' | 'partial' | 'completed'>('idle');
     const [currentStep, setCurrentStep] = useState(0);
 
-    // 🔥 CORREÇÃO: Usar URL relativa com proxy
-    const API_BASE_URL = ''; // Vazio para usar proxy do Vite
+    const API_BASE_URL = import.meta.env?.VITE_API_URL || "http://localhost:8080";
 
     if (!isOpen) return null;
 
@@ -116,7 +115,7 @@ export default function UploadModal({ isOpen, onClose }: UploadModalProps) {
             console.log('📤 Enviando para API...');
 
             // 🔥 CORREÇÃO: URL relativa e headers corretos
-            const response = await fetch(`api/curriculos/analisar`, {
+            const response = await fetch(`${API_BASE_URL}/api/curriculos/analisar`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`
