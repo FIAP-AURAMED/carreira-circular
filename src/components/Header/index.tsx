@@ -22,7 +22,7 @@ export default function Header({ onOpenUpload }: HeaderProps) {
             
             {/* Esquerda: Logo */}
             <Link to="/" className="flex items-center gap-2 z-50">
-                <img src={logo} alt="Logo" className="h-8 w-auto"/>
+                <img src={logo} alt="Logo" className="h-16 w-auto"/>
                 <span className="font-bold text-lg hidden sm:block text-foreground">Carreira Circular</span>
             </Link>
 
