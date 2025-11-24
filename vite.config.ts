@@ -8,4 +8,20 @@ export default defineConfig({
     react(),
     tailwindcss(),
   ],
+  server: {
+    proxy: {
+      '/api': {
+        target: 'https://carreira-circular-java.onrender.com',
+        changeOrigin: true,
+        secure: false,
+        rewrite: (path) => path
+      },
+      '/usuarios': {
+        target: 'https://carreira-circular-java.onrender.com',
+        changeOrigin: true,
+        secure: false,
+        rewrite: (path) => path
+      }
+    }
+  }
 })

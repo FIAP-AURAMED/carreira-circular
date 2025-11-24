@@ -44,7 +44,7 @@
 
     .dark {
         /* MODO ESCURO (Dark Mode) */
-        --background: #0B0516;       /* Seu fundo escuro original */
+        --background: #0B0516;
         --foreground: #f8fafc;
         
         --card: #181024;
@@ -83,12 +83,11 @@
 
 @layer utilities {
   .animate-fade-in-up {
-    animation: fadeInUp 0.8s ease-out forwards; /* forwards mantém o estado final */
-    opacity: 0; /* Começa invisível */
-    transform: translateY(20px); /* Começa um pouco abaixo */
+    animation: fadeInUp 0.8s ease-out forwards;
+    opacity: 0; 
+    transform: translateY(20px); 
   }
 
-  /* Delays para criar o efeito de escadinha */
   .delay-100 { animation-delay: 100ms; }
   .delay-200 { animation-delay: 200ms; }
   .delay-300 { animation-delay: 300ms; }
