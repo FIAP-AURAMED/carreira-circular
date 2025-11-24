@@ -1,4 +1,4 @@
-// UploadModal.tsx - VERSÃO CORRIGIDA
+
 import { X, Upload, FileText, Brain, Sparkles, Lock } from 'lucide-react';
 import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -30,8 +30,7 @@ export default function UploadModal({ isOpen, onClose }: UploadModalProps) {
         const file = e.target.files?.[0];
         if (!file) return;
 
-        // 🔥 VALIDAÇÃO DO ARQUIVO
-        if (file.type !== 'application/pdf') {
+             if (file.type !== 'application/pdf') {
             alert('Por favor, selecione um arquivo PDF');
             return;
         }
@@ -61,7 +60,7 @@ export default function UploadModal({ isOpen, onClose }: UploadModalProps) {
             });
 
             if (!token || !userId) {
-                // Simula análise (em produção, isso viria do backend)
+               
                 const analiseSimulada = {
                     analiseId: Date.now(),
                     usuarioId: null,
@@ -101,7 +100,7 @@ export default function UploadModal({ isOpen, onClose }: UploadModalProps) {
                 setTimeout(() => {
                     clearInterval(stepInterval);
 
-                    // SALVA NO LOCALSTORAGE PARA USAR DEPOIS DO LOGIN
+                    
                     localStorage.setItem('analiseCurriculoPendente', JSON.stringify(analiseSimulada));
                     localStorage.setItem('curriculoFile', file.name);
 
@@ -110,16 +109,13 @@ export default function UploadModal({ isOpen, onClose }: UploadModalProps) {
                 return;
             }
             const formData = new FormData();
-            formData.append('arquivoPdf', file); // 🔥 NOME CORRETO: 'arquivoPdf'
+            formData.append('arquivoPdf', file);
 
             console.log('📤 Enviando para API...');
-
-            // 🔥 CORREÇÃO: URL relativa e headers corretos
             const response = await fetch(`${API_BASE_URL}/api/curriculos/analisar`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`
-                    // 🔥 NÃO incluir 'Content-Type' - o browser define automaticamente para FormData
                 },
                 body: formData
             });
@@ -129,8 +125,6 @@ export default function UploadModal({ isOpen, onClose }: UploadModalProps) {
                 statusText: response.statusText,
                 ok: response.ok
             });
-
-            // 🔥 TRATAMENTO DETALHADO DE ERROS
             if (!response.ok) {
                 let errorMessage = `Erro ${response.status}: ${response.statusText}`;
 
@@ -147,8 +141,7 @@ export default function UploadModal({ isOpen, onClose }: UploadModalProps) {
             clearInterval(stepInterval);
             setStatus('completed');
 
-            // Salvar no histórico
-            salvarNoHistorico(data);
+                  salvarNoHistorico(data);
 
             alert("✅ Análise completa! Atualizando seu perfil...");
             onClose();
@@ -159,7 +152,6 @@ export default function UploadModal({ isOpen, onClose }: UploadModalProps) {
             clearInterval(stepInterval);
             setStatus('idle');
 
-            // 🔥 MENSAGENS DE ERRO ESPECÍFICAS
             let mensagemErro = "Erro ao conectar com o servidor.";
 
             if (error.message.includes('400')) {
@@ -182,7 +174,7 @@ export default function UploadModal({ isOpen, onClose }: UploadModalProps) {
 
     const salvarNoHistorico = (analise: any) => {
         const historico = JSON.parse(localStorage.getItem('historicoAnalises') || '[]');
-        historico.unshift({ // 🔥 Adiciona no início para manter ordem recente
+        historico.unshift({ 
             ...analise,
             tipo: 'curriculo',
             data: new Date().toISOString()
@@ -190,8 +182,7 @@ export default function UploadModal({ isOpen, onClose }: UploadModalProps) {
         localStorage.setItem('historicoAnalises', JSON.stringify(historico));
     };
 
-    // 1. TELA DE PROCESSAMENTO
-    if (status === 'processing') {
+       if (status === 'processing') {
         return (
             <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-md p-4">
                 <div className="w-full max-w-lg p-6 sm:p-8 text-center relative">
@@ -209,7 +200,7 @@ export default function UploadModal({ isOpen, onClose }: UploadModalProps) {
         );
     }
 
-    // 2. TELA PARCIAL (BLOQUEIO)
+    
     if (status === 'partial') {
         return (
             <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-md p-4">
@@ -241,7 +232,7 @@ export default function UploadModal({ isOpen, onClose }: UploadModalProps) {
         )
     }
 
-    // 3. TELA INICIAL (UPLOAD) - CORRIGIDA
+   
     return (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4" onClick={(e) => e.target === e.currentTarget && onClose()}>
             <div className="relative w-full max-w-md bg-[#0B0516] border border-white/10 rounded-2xl p-6 shadow-2xl animate-fade-in-up">

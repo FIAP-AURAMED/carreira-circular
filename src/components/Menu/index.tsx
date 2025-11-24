@@ -11,7 +11,7 @@ export default function MobileMenu() {
 
     // Classes utilitárias para Mobile First
     const linkStyle = "flex items-center gap-3 w-full px-4 py-3 rounded-lg text-base font-medium transition-all active:scale-95";
-    const activeStyle = "bg-primary/10 text-primary border border-primary/20";
+    const activeStyle = "bg-primary text-white border border-primary/20";
     const idleStyle = "text-foreground/70 hover:bg-secondary hover:text-foreground";
 
     return (
@@ -25,7 +25,6 @@ export default function MobileMenu() {
                 <MenuIcon size={28} />
             </button>
 
-            {/* Overlay Escuro (Cobre a tela toda) */}
             <div 
                 className={`fixed inset-0 bg-black/80 backdrop-blur-sm z-[60] transition-opacity duration-300 ${
                     isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
@@ -35,7 +34,7 @@ export default function MobileMenu() {
 
             {/* Gaveta Lateral (Drawer) */}
             <div
-                className={`fixed top-0 right-0 h-full w-[80%] max-w-[300px] bg-[#0f111a] border-l border-white/10 shadow-2xl z-[70] transform transition-transform duration-300 ease-out ${
+                className={`fixed top-0 right-0 h-full w-[80%] max-w-[300px] bg-primary border-l border-white/10 shadow-2xl z-[100] transform transition-transform duration-300 ease-out ${
                     isOpen ? 'translate-x-0' : 'translate-x-full'
                 }`}
             >
