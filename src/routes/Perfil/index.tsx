@@ -101,7 +101,7 @@ export default function Perfil() {
 
     const targetUserId = id || loggedUserId;
 
-    useEffect(() => {
+   useEffect(() => {
         if (!loggedUserId && !token) {
             navigate("/login");
             return;
@@ -115,7 +115,14 @@ export default function Perfil() {
                 // 1. Buscar dados do usuário
                 let userData = null;
                 try {
-                    const userRes = await fetch(`/usuarios/${targetUserId}`);
+                    // 🔥 CORREÇÃO: Adicionado API_BASE_URL e Token de autenticação
+                    const userRes = await fetch(`${API_BASE_URL}/usuarios/${targetUserId}`, {
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json'
+                        }
+                    });
+
                     if (userRes.status === 404) {
                         setError("Usuário não encontrado.");
                         setLoading(false);
@@ -124,6 +131,7 @@ export default function Perfil() {
                     if (!userRes.ok) throw new Error('Erro ao buscar usuário');
                     userData = await userRes.json();
                 } catch (e: any) {
+                    console.error("Erro user:", e); // Log para debug
                     setError(e.message);
                     setLoading(false);
                     return;
@@ -132,7 +140,8 @@ export default function Perfil() {
                 // 2. Buscar análise MBTI do usuário
                 let analiseMBTI = null;
                 try {
-                    const mbtiRes = await fetch(`/api/perfil/usuario/${targetUserId}`, {
+                    // 🔥 CORREÇÃO: Adicionado API_BASE_URL
+                    const mbtiRes = await fetch(`${API_BASE_URL}/api/perfil/usuario/${targetUserId}`, {
                         headers: { 'Authorization': `Bearer ${token}` }
                     });
                     if (mbtiRes.ok) {
@@ -155,7 +164,8 @@ export default function Perfil() {
                 } else {
                     // Busca do backend
                     try {
-                        const historicoRes = await fetch(`/api/analises/usuario/${targetUserId}`, {
+                        // 🔥 CORREÇÃO: Adicionado API_BASE_URL
+                        const historicoRes = await fetch(`${API_BASE_URL}/api/analises/usuario/${targetUserId}`, {
                             headers: { 'Authorization': `Bearer ${token}` }
                         });
                         if (historicoRes.ok) {
