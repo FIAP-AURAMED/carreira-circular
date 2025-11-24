@@ -100,14 +100,13 @@ export default function Cadastro() {
         throw new Error("NETWORK_ERROR"); 
       });
 
-      // 1. Ler o corpo como texto primeiro para garantir que pegamos qualquer coisa
+      
       const responseText = await response.text();
       let dataResponse;
 
       try {
         dataResponse = JSON.parse(responseText);
       } catch (e) {
-        // Se falhar o parse, significa que o servidor devolveu texto puro ou HTML
         console.warn("API não retornou JSON. Corpo bruto:", responseText);
       }
 
@@ -117,11 +116,11 @@ export default function Cadastro() {
 
         if (response.status === 409) throw new Error("Este e-mail já está em uso.");
         
-        // Tenta extrair a mensagem mais específica possível enviada pelo Java
+    
         const rawMessage = 
-            dataResponse?.message ||   // Padrão Spring Boot
-            dataResponse?.mensagem ||  // Seu padrão customizado
-            dataResponse?.error ||     // Padrão OAuth/Outros
+            dataResponse?.message ||  
+            dataResponse?.mensagem ||
+            dataResponse?.error ||     
             (typeof responseText === 'string' && responseText.length < 200 ? responseText : `Erro Interno (${response.status})`);
 
         throw new Error(rawMessage);
@@ -144,7 +143,7 @@ export default function Cadastro() {
       let titulo = "Erro ao Cadastrar";
       let mensagem = error.message;
 
-      // Personaliza mensagens técnicas para algo legível, se necessário
+
       if (error.message === "NETWORK_ERROR") {
           titulo = "Sem Conexão";
           mensagem = "Não foi possível conectar ao servidor.";

@@ -4,7 +4,7 @@ import {
     User, LogOut, TrendingUp, Target, Zap,
     FileText, BrainCircuit, Clock, Edit2, Lightbulb, X,
     Upload, History, AlertCircle, CheckCircle,
-    AlertTriangle, // ← ADICIONAR
+    AlertTriangle, 
     Download,
     Star,
     MapPin,
@@ -16,7 +16,7 @@ import {
 import { useForm } from "react-hook-form";
 import HabilidadeMap from "../../components/HabilidadeMap";
 import UploadModal from "../../components/Upload/UploadModal";
-// --- TIPAGEM COMPLETA ---
+
 interface UserData {
     id: number;
     nome: string;
@@ -93,8 +93,7 @@ export default function Perfil() {
     const [loading, setLoading] = useState(true);
     const [showEditModal, setShowEditModal] = useState(false);
     const [showUploadModal, setShowUploadModal] = useState(false);
-    const [activeTab, setActiveTab] = useState<'overview' | 'habilidades' | 'historico'>('overview');
-    const [error, setError] = useState<string | null>(null); // ← NOVO ESTADO PARA ERROS
+    const [error, setError] = useState<string | null>(null); 
 
     const API_BASE_URL = import.meta.env?.VITE_API_URL || "http://localhost:8080";
     const loggedUserId = localStorage.getItem("userId");
@@ -138,7 +137,6 @@ export default function Perfil() {
                     });
                     if (mbtiRes.ok) {
                         const mbtiData = await mbtiRes.json();
-                        // Pega a análise mais recente
                         analiseMBTI = Array.isArray(mbtiData) ? mbtiData[0] : mbtiData;
                     }
                 } catch (error) {
@@ -695,7 +693,6 @@ export default function Perfil() {
     );
 }
 
-// Componente de edição com suas cores
 function EditProfileForm({ user, onClose, API_BASE_URL, userId }: any) {
     const { register, handleSubmit } = useForm({ defaultValues: user });
     const onSubmit = async (data: any) => {

@@ -1,14 +1,14 @@
-import { Github, Linkedin, Users, Target, Rocket, ExternalLink } from "lucide-react";
+import { Github, Linkedin, Users, Target, Rocket } from "lucide-react";
 import fotoGrazi from '../../assets/image-grazi.png'
 import fotoDiego from '../../assets/image-diego.png'
 import fotoIsa from '../../assets/img-isa.png'
 
-// --- DADOS DOS INTEGRANTES (Preencha aqui) ---
+
 const TEAM = [
   {
     nome: "Grazielle Alencar",
-    turma: "1TDSPO - FIAP", // Exemplo de turma
-    foto: fotoGrazi, // Coloque a URL da foto real aqui
+    turma: "1TDSPO - FIAP",
+    foto: fotoGrazi, 
     linkedin: "https://www.linkedin.com/in/grazielle-alencar/",
     github: "https://github.com/grazialencar"
 
@@ -16,14 +16,14 @@ const TEAM = [
   {
     nome: "Diego Andrade",
     turma: "1TDSPO - FIAP",
-    foto: fotoDiego, // Coloque a URL da foto real aqui
+    foto: fotoDiego, 
     linkedin: "https://www.linkedin.com/in/andradedossantosdiego/?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
     github: "https://github.com/diandrade"
   },
 {
     nome: "Isabela Yamauchi",
     turma: "1TDSPO - FIAP",
-    foto: fotoIsa, // Coloque a URL da foto real aqui
+    foto: fotoIsa, 
     linkedin: "https://www.linkedin.com/in/isabelayamauchi/",
     github: "https://github.com/IsabelaYamauchi"
 }];

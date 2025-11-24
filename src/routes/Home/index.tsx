@@ -12,7 +12,7 @@ interface LayoutContextType {
   openUpload: () => void;
 }
 
-// Card usando bg-card e border-border
+
 const BentoCard = ({ icon: Icon, title, description, className = "" }: any) => (
   <div className={`group relative overflow-hidden rounded-2xl border border-border bg-card p-6 hover:border-primary/50 transition-all duration-300 ${className}`}>
     <div className="absolute top-0 right-0 p-4 opacity-20 group-hover:opacity-100 group-hover:text-primary transition-all duration-500">
@@ -34,7 +34,7 @@ export default function Home() {
     const { openUpload } = useOutletContext<LayoutContextType>(); 
 
     return (
-        // Usando bg-background e text-foreground definidos no seu CSS
+
         <div className="relative min-h-screen bg-background text-foreground selection:bg-primary/30">
             
             {/* HERO SECTION */}
@@ -75,7 +75,7 @@ export default function Home() {
             {/* STATS STRIP */}
             <div className="border-y border-border bg-card/50 backdrop-blur-sm">
                 <div className="container mx-auto px-4 py-8 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-                    {/* Exemplo de Stat */}
+                  
                     {[
                         { val: "+15k", label: "Habilidades Mapeadas" },
                         { val: "98%", label: "Precisão da IA" },

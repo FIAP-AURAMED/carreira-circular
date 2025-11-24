@@ -1,73 +1,97 @@
-# React + TypeScript + Vite
+# Carreira Circular – O Futuro do Trabalho
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+[🔗 *Acesse o site implantado aqui*](https://carreira-circular.vercel.app/)
 
-Currently, two official plugins are available:
+[*Link vídeo do youtube*](https://youtu.be/FBWfF2_eomE)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+## 📌 Objetivo do Projeto
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-## Expanding the ESLint configuration
+O principal objetivo é *combater a obsolescência profissional e o medo da substituição pela Inteligência Artificial*. O modelo de carreira linear não existe mais, e muitos profissionais não sabem como adaptar suas habilidades atuais para as demandas do futuro.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+Para resolver esse problema, desenvolvemos o *Carreira Circular*, uma plataforma baseada em IA que promove o "upcycling" profissional. A aplicação foi construída como uma **Single Page Application (SPA)** moderna e interativa. A plataforma oferece:
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+-   **Análise de Currículo com IA:** Upload de CV para mapeamento automático de competências.
+-   **Upcycling Profissional:** Transformação de habilidades antigas em novas competências valorizadas pelo mercado.
+-   **Previsão de Mercado:** Dados em tempo real sobre profissões e skills em alta.
+-   **Blindagem de Carreira:** Alertas sobre riscos de automação e planos de contingência personalizados.
+-   **Design Futurista e Responsivo:** Uma interface imersiva com animações fluidas e total adaptação para dispositivos móveis.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+Nosso foco foi criar uma solução que dê ao usuário a *clareza, direção e segurança* necessárias para navegar em um mercado de trabalho não-linear.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+---
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 🗂 Estrutura de Pastas e Arquivos (React)
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+O projeto foi estruturado utilizando uma arquitetura modular para garantir escalabilidade e manutenção.
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+📁 carreira-circular
+
+* 📁 public/
+* 📁 src/
+    * 📁 assets/
+    * 📁 components/
+    * 📁 routes/
+    * 📁 context/
+    * 📄 App.tsx
+    * 📄 index.css
+    * 📄 main.tsx
+* 📄 .gitignore
+* 📄 index.html
+* 📄 package.json
+* 📄 README.md
+* 📄 vite.config.ts
+
+---
+
+## 🛠 Tecnologias Utilizadas
+
+-   **React com Vite:** Biblioteca para construção de interfaces e ambiente de desenvolvimento de alta performance.
+-   **TypeScript:** Para adicionar tipagem estática, garantindo um código mais seguro e escalável.
+-   **TailwindCSS:** Framework CSS utility-first para estilização moderna, animações e responsividade ágil.
+-   **React Router DOM:** Para gerenciamento de rotas e navegação fluida na SPA.
+-   **Lucide React:** Biblioteca de ícones leves e consistentes.
+-   **GitHub & GitFlow:** Para versionamento de código e organização do fluxo de trabalho em equipe.
+-   **Vercel:** Para deploy contínuo e hospedagem da aplicação.
+
+---
+
+## 🚀 Como Executar o Projeto
+
+Para rodar este projeto localmente, siga os passos abaixo:
+
+1.  **Clone o repositório:**
+    ```bash
+    git clone https://github.com/FIAP-AURAMED/carreira-circular.git
+    ```
+2.  **Navegue até o diretório do projeto:**
+    ```bash
+    cd carreira-circular
+    ```
+3.  **Instale as dependências:**
+    ```bash
+    npm install
+    ```
+4.  **Execute o servidor de desenvolvimento:**
+    ```bash
+    npm run dev
+    ```
+5.  Abra seu navegador e acesse a porta indicada no seu terminal (geralmente `http://localhost:5173`).
+
+---
+
+## 👥 Integrantes
+
+| Nome | RM | Turma | GitHub | LinkedIn |
+| :--- | :--- | :--- | :--- | :--- |
+| Diego Andrade | 566385 | 1TDSPO | [diandrade](https://github.com/diandrade) | [LinkedIn](https://www.linkedin.com/in/andradedossantosdiego/?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app) |
+| Grazielle Alencar | 561529 | 1TDSPO | [grazialencar](https://github.com/grazialencar) | [LinkedIn](https://www.linkedin.com/in/grazielle-alencar/) |
+| Isabela Yamauchi | 560310 | 1TDSPO | [IsabelaYamauchi](https://github.com/IsabelaYamauchi) | [LinkedIn](https://www.linkedin.com/in/isabelayamauchi/) |
+
+---
+
+## Repositório no GitHub
+
+🔗 [https://github.com/FIAP-AURAMED/carreira-circular.git](https://github.com/FIAP-AURAMED/carreira-circular.git)

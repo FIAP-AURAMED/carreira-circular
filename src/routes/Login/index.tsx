@@ -41,14 +41,13 @@ export default function Login() {
                 throw new Error("Erro no login");
             }
 
-            // 👇 AGORA sim está declarado no escopo certo
             const dataResponse = await response.json();
             console.log("🔍 Resposta login:", dataResponse);
 
             // Extrair ID do token
             const token = dataResponse.token;
             const partes = token.split("-");
-            const userId = partes[1]; // o ID sempre está aqui
+            const userId = partes[1];
 
             localStorage.setItem("authToken", token);
             localStorage.setItem("userId", userId);

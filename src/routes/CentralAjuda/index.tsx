@@ -11,7 +11,7 @@ import {
   Loader2 
 } from "lucide-react";
 
-// --- TIPAGEM DO FORMULÁRIO ---
+
 interface ContactFormData {
   nome: string;
   email: string;
@@ -43,7 +43,7 @@ export default function CentralAjuda() {
   const [isSuccess, setIsSuccess] = useState(false);
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
 
-  // Configuração do React Hook Form
+  
   const { 
     register, 
     handleSubmit, 
@@ -51,16 +51,14 @@ export default function CentralAjuda() {
     formState: { errors, isSubmitting } 
   } = useForm<ContactFormData>();
 
-  // Função de Envio (Simulação)
+
   const onSubmit = async (data: ContactFormData) => {
-    // Simula delay de rede (aqui entraria seu fetch para o backend)
     await new Promise((resolve) => setTimeout(resolve, 2000));
     
     console.log("Formulário enviado:", data);
     setIsSuccess(true);
     reset();
 
-    // Remove mensagem de sucesso após 5 segundos
     setTimeout(() => setIsSuccess(false), 5000);
   };
 
@@ -71,13 +69,12 @@ export default function CentralAjuda() {
   return (
     <div className="min-h-screen w-full bg-background text-foreground selection:bg-primary/30 relative overflow-hidden font-sans">
       
-      {/* Background Glows */}
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/10 blur-[120px] rounded-full pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-blue-600/10 blur-[100px] rounded-full pointer-events-none" />
 
       <div className="container mx-auto px-4 py-12 relative z-10">
         
-        {/* HEADER */}
+
         <div className="text-center max-w-2xl mx-auto mb-16 animate-fade-in-up">
           <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-card border border-border text-primary text-xs font-bold uppercase tracking-wider mb-4">
             <HelpCircle size={14} /> Suporte & FAQ
@@ -90,7 +87,7 @@ export default function CentralAjuda() {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
           
-          {/* --- COLUNA ESQUERDA: FAQ (Accordion) --- */}
+       
           <div className="space-y-6 animate-fade-in-up delay-100">
              <h2 className="text-2xl font-bold flex items-center gap-2 mb-6 text-foreground">
                 <MessageSquare className="text-primary" /> Perguntas Frequentes
@@ -130,7 +127,6 @@ export default function CentralAjuda() {
              </div>
           </div>
 
-          {/* --- COLUNA DIREITA: FORMULÁRIO COMPLETO --- */}
           <div className="bg-card border border-border rounded-3xl p-8 shadow-2xl animate-fade-in-up delay-200 relative">
              
              <h2 className="text-2xl font-bold flex items-center gap-2 mb-2 text-foreground">
