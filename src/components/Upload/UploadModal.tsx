@@ -116,7 +116,7 @@ export default function UploadModal({ isOpen, onClose }: UploadModalProps) {
             console.log('📤 Enviando para API...');
 
             // 🔥 CORREÇÃO: URL relativa e headers corretos
-            const response = await fetch(`/api/curriculos/analisar`, {
+            const response = await fetch(`api/curriculos/analisar`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`
